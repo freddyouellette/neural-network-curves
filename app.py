@@ -37,13 +37,15 @@ def select_problem_set():
 	
 	return dataFunc, axes_range
 
-def generate_data(dataFunc, axes_range, number_samples):
+def generate_data(dataFunc, axes_range, number_samples, noise=0.0):
 	data_arr = []
-	for i in range(number_samples):
+	for _ in range(number_samples):
 		x = random.uniform(-axes_range, axes_range)
 		y = random.uniform(-axes_range, axes_range)
-		color = "Above" if dataFunc(x) < y else "Below"
-		data_arr.append([x, y, color])
+		above = "Above" if dataFunc(x) < y else "Below"
+		noise_x = random.uniform(-noise * axes_range, noise * axes_range)
+		noise_y = random.uniform(-noise * axes_range, noise * axes_range)
+		data_arr.append([x + noise_x, y + noise_y, above])
 	data = np.array(data_arr)
 	return pd.DataFrame(data, columns=["X", "Y", "Above/Below"])
 
@@ -103,8 +105,9 @@ def main():
 	st.header("Select the Problem Set:")
 	dataFunc, axes_range = select_problem_set()
 	number_samples = st.slider("Number of samples", 10, 10000, 5000)
+	sample_noise = st.slider("Sample noise", 0.0, 1.0, 0.01, format="%f")
 	
-	data = generate_data(dataFunc, axes_range, number_samples)
+	data = generate_data(dataFunc, axes_range, number_samples, sample_noise)
 
 	st.subheader("What We Want:")
 	st.plotly_chart(get_data_graph(data, dataFunc, axes_range))
