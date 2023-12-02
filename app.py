@@ -108,6 +108,7 @@ def main():
 	sample_noise = st.slider("Sample noise", 0.0, 1.0, 0.01, format="%f")
 	
 	data = generate_data(dataFunc, axes_range, number_samples, sample_noise)
+	confirmation_data = generate_data(dataFunc, axes_range, number_samples, 0.0)
 
 	st.subheader("What We Want:")
 	st.plotly_chart(get_data_graph(data, dataFunc, axes_range))
@@ -160,9 +161,9 @@ def main():
 					)
 				)
 			
-			predictions = predict(model, data)
+			predictions = predict(model, confirmation_data)
 
-			data["Predictions"] = predictions
+			confirmation_data["Predictions"] = predictions
 			
 			with col1:
 				nn_info.write(
@@ -174,7 +175,7 @@ def main():
 					"* Number of Nodes Per Hidden Layer: %s\n" % hidden_layer_nodes +
 					"* Validation Split: %s\n" % validation_split
 				)
-			predictions_chart.plotly_chart(get_data_graph(data, dataFunc, axes_range, "Predictions"))
+			predictions_chart.plotly_chart(get_data_graph(confirmation_data, dataFunc, axes_range, "Predictions"))
 		with col1: training_label.header("Training Complete!")
 
 if __name__ == "__main__":
