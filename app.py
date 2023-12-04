@@ -102,6 +102,9 @@ def predict(model, data):
 
 def main():
 	st.title("Using a Neural Network to Classify Points Above or Below a Curve")
+	
+	st.write("*Created by* [*Freddy Ouellette*](https://freddyouellette.com) — [*GitHub*](https://github.com/freddyouellette/neural-network-curves)")
+	
 	st.header("Select the Problem Set:")
 	dataFunc, axes_range = select_problem_set()
 	number_samples = st.slider("Number of samples", 10, 10000, 5000)
