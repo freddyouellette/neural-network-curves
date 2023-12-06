@@ -71,11 +71,11 @@ def get_data_graph(data, dataFunc, axes_range, colorRow="Above/Below"):
 
 	return fig
 
-def build_model(learning_rate, number_hidden_layers, hidden_layer_nodes):
+def build_model(learning_rate, number_hidden_layers, hidden_layer_nodes, hidden_activation_function, output_activation_function):
 	layers = [tf.keras.layers.InputLayer(input_shape=(2,))]
 	for i in range(number_hidden_layers):
-		layers.append(tf.keras.layers.Dense(units=hidden_layer_nodes, activation='sigmoid', kernel_initializer='random_uniform', bias_initializer='random_uniform'))
-	layers.append(tf.keras.layers.Dense(units=1, activation='sigmoid', kernel_initializer='random_uniform', bias_initializer='random_uniform'))
+		layers.append(tf.keras.layers.Dense(units=hidden_layer_nodes, activation=hidden_activation_function, kernel_initializer='random_uniform', bias_initializer='random_uniform'))
+	layers.append(tf.keras.layers.Dense(units=1, activation=output_activation_function, kernel_initializer='random_uniform', bias_initializer='random_uniform'))
 
 	model = tf.keras.Sequential(layers)
 
@@ -100,6 +100,18 @@ def train(model, data, batch_size, validation_split):
 def predict(model, data):
 	return model.predict(data[["X", "Y"]].astype(float))
 
+def graph_activation_function(activation_function):
+	x = np.linspace(-10, 10, 100)
+	if activation_function == "sigmoid":
+		y = 1 / (1 + np.exp(-x))
+	elif activation_function == "relu":
+		y = np.maximum(0, x)
+	elif activation_function == "tanh":
+		y = np.tanh(x)
+	fig = px.line(x=x, y=y, width=300, height=150)
+	fig.update_layout(xaxis_title="", yaxis_title="", margin=dict(l=0, r=0, t=0, b=0))
+	st.plotly_chart(fig)
+
 def main():
 	st.title("Using a Neural Network to Classify Points Above or Below a Curve")
 	
@@ -118,13 +130,20 @@ def main():
 
 	st.header("Build the Neural Network:")
 	learning_rate = st.number_input("Learning rate", None, 1.0, 0.1, format="%f")
+	optcol1, optcol2 = st.columns(2)
+	with optcol1:
+		number_hidden_layers = st.number_input("Number of hidden layers", 1, 10, 2)
+		hidden_activation_function = st.selectbox("Hidden layers activation function", ["sigmoid", "relu", "tanh"])
+		graph_activation_function(hidden_activation_function)
+	with optcol2:
+		hidden_layer_nodes = st.number_input("Hidden layer nodes", 1, 100, 5)
+		output_activation_function = st.selectbox("Output layer activation function", ["sigmoid", "relu", "tanh"])
+		graph_activation_function(output_activation_function)
 	batch_size = st.number_input("Batch size", 1, 1000, 5)
-	number_hidden_layers = st.number_input("Number of hidden layers", 1, 10, 2)
-	hidden_layer_nodes = st.number_input("Hidden layer nodes", 1, 100, 5)
 	epochs = st.number_input("Epochs", 1, 1000, 10)
 	validation_split = st.number_input("Validation split", 0.01, 0.99, 0.1)
 
-	model = build_model(learning_rate, number_hidden_layers, hidden_layer_nodes)
+	model = build_model(learning_rate, number_hidden_layers, hidden_layer_nodes, hidden_activation_function, output_activation_function)
 
 	if st.button('Train the Neural Network', use_container_width=True):
 		col1, col2 = st.columns(2)
