@@ -1,4 +1,4 @@
-# Using a Neural Network to Classify Points Above or Below a Linear Equation
+# Using a Neural Network to Classify Points Above or Below a Curve
 
 [**Try it here!**](https://neural-network-curves.streamlit.app/)
 
