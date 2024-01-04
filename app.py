@@ -115,7 +115,7 @@ def graph_activation_function(activation_function):
 def main():
 	st.title("Using a Neural Network to Classify Points Above or Below a Curve")
 	
-	st.write("*Created by* [*Freddy Ouellette*](https://freddyouellette.com) — [*GitHub*](https://github.com/freddyouellette/neural-network-curves)")
+	st.write("[![Created by Freddy Ouellette](https://img.shields.io/badge/Created%20by%20Freddy%20Ouellette-blue)](https://freddyouellette.com) [![GitHub](https://img.shields.io/badge/GitHub-black?logo=github)](https://github.com/freddyouellette/neural-network-curves)")
 	
 	st.header("Select the Problem Set:")
 	dataFunc, axes_range = select_problem_set()

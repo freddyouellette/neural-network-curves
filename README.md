@@ -1,6 +1,8 @@
 # Using a Neural Network to Classify Points Above or Below a Curve
 
-[**Try it here!**](https://neural-network-curves.streamlit.app/)
+[![Created by Freddy Ouellette](https://img.shields.io/badge/Created%20by%20Freddy%20Ouellette-gray)](https://freddyouellette.com) [![GitHub](https://img.shields.io/badge/GitHub-black?logo=github)](https://github.com/freddyouellette/neural-network-curves)
+
+[![Try it now!](https://img.shields.io/badge/Try%20it%20now!-blue?style=for-the-badge&logo=streamlit)](https://neural-network-curves.streamlit.app/)
 
 ![Training Process](example.png)
 
